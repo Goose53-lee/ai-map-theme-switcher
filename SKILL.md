@@ -7,6 +7,11 @@ description: >
   当用户提到“把浅色地图改成深色”、“把 AI 地图改成浅色”、“AI 地图深浅色互换”、“浅色转深色”、
   “深色转浅色”、“根据深色样例修改浅色文件颜色”、“根据浅色规范还原深色地图”或“将当前打开的
   Illustrator 地图换色”时使用此技能。
+license: MIT
+compatibility: Requires macOS, Adobe Illustrator, and osascript (AppleScript + ExtendScript).
+metadata:
+  author: Goose53-lee
+  version: "1.0.0"
 ---
 
 # AI 矢量地图双向主题切换 (ai-map-theme-switcher)
@@ -16,19 +21,19 @@ description: >
 
 ## 执行工作流
 
-直接调用相对 Skill 根目录的脚本 `scripts/run_switch.sh`（若已安装到全局库则位于 `~/.newmax/skills/ai-map-theme-switcher/scripts/run_switch.sh`）：
+在当前 Skill 所在目录下调用脚本 `scripts/run_switch.sh`（路径相对于 `SKILL.md` 所在根目录；不同 Agent 的默认安装路径不同，例如 `~/.agents/skills/ai-map-theme-switcher/`、`~/.claude/skills/ai-map-theme-switcher/`、`~/.newmax/skills/ai-map-theme-switcher/` 或项目内 `.claude/skills/` / `.agents/skills/`，请以实际加载到的 Skill 根目录为准）：
 
 ```bash
-# 格式: scripts/run_switch.sh <目标主题: dark|light|auto> [地图文件绝对路径] [--force]
+# 格式: bash scripts/run_switch.sh <目标主题: dark|light|auto> [地图文件绝对路径] [--force]
 
 # 1. 自动探测 Illustrator 当前打开文档并切换为相反主题
-scripts/run_switch.sh auto
+bash scripts/run_switch.sh auto
 
 # 2. 将指定浅色地图转为深色
-scripts/run_switch.sh dark "/path/to/your/map.ai"
+bash scripts/run_switch.sh dark "/path/to/your/map.ai"
 
 # 3. 强制重扫指定文件为浅色（跳过幂等早停）
-scripts/run_switch.sh light "/path/to/your/map.ai" --force
+bash scripts/run_switch.sh light "/path/to/your/map.ai" --force
 ```
 
 ## 核心约束与防循环规范

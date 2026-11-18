@@ -1,6 +1,6 @@
 # ai-map-theme-switcher
 
-Adobe Illustrator 矢量地图双向深浅色主题极速切换 Skill（支持直接通过 Git 仓库安装到 NewMax / Claude Code）。
+Adobe Illustrator 矢量地图双向深浅色主题极速切换 Skill（遵循 Agent Skills 开放标准，兼容 Claude Code、Codex、Cursor、OpenClaw、NewMax 等各类 AI Agent）。
 
 ![Adobe Illustrator 矢量地图深浅色切换示意图](./assets/map-theme-flip.png)
 
@@ -31,18 +31,42 @@ Adobe Illustrator 矢量地图双向深浅色主题极速切换 Skill（支持�
 - **三层短路跳过几万条 CAD 工程线，把耗时压到几秒钟**：真实地图里真正卡死脚本的往往是密密麻麻的 CAD 辅助线，全量读一遍内存直接飙高、AI 跟着假死。后来在引擎里加了三层拦截——先按容器名关键词秒跳过，再对未命名分组做首/中/尾抽样指纹判定，最后在主循环最前面拦截散落工程线和 `X-Ray` 检测设备，3 万+ 路径的复杂大图也能在 3～5 秒内跑完。
 - **防呆与兜底机制**：为了防止平时顺手点错把原稿覆盖了，首次运行会自动存一份 `*_备份.ai`（已存在时绝不二次覆盖）；文档已经在 Illustrator 里开着就直接切过去改，不重复开关文件；脚本跑之前先给当前画面做一次明度投票，确认九成以上已经是目标主题就直接早停，避免反复跑脚本把半透明图层越涂越乱。
 
-## 一键安装为  Skill
+## 安装为 Skill（多 Agent 通用）
 
-在 Agent 对话中直接发送仓库地址并要求安装：
+本仓库按 [Agent Skills 开放标准](https://agentskills.io) 组织（根目录即 `SKILL.md` + `scripts/` + `references/`），团队成员无论使用哪种 Agent 都可以直接安装：
+
+### 方式一：通过 `skills` CLI 一键安装（推荐，支持 Claude Code / Codex / Cursor / OpenCode 等）
+
+```bash
+npx skills add https://github.com/Goose53-lee/ai-map-theme-switcher
+```
+
+### 方式二：在支持的 Agent 对话中直接安装（如 NewMax / Claude Code）
+
+在对话中发送仓库地址并要求安装：
 
 > 安装这个 Skill：https://github.com/Goose53-lee/ai-map-theme-switcher
 
-或手动克隆到全局 Skill 目录：
+### 方式三：手动克隆到对应 Agent 的 Skill 目录
+
+按自己使用的 Agent 选择目标路径（全局或项目级均可）：
+
+| Agent / 工具 | 全局 Skill 目录 | 项目级目录（工作区内） |
+| :--- | :--- | :--- |
+| **通用标准（Codex / OpenCode / Skills CLI）** | `~/.agents/skills/ai-map-theme-switcher` | `.agents/skills/ai-map-theme-switcher` |
+| **Claude Code** | `~/.claude/skills/ai-map-theme-switcher` | `.claude/skills/ai-map-theme-switcher` |
+| **Cursor** | `~/.cursor/skills/ai-map-theme-switcher` | `.cursor/skills/ai-map-theme-switcher` |
+| **NewMax** | `~/.newmax/skills/ai-map-theme-switcher` | `.claude/skills/ai-map-theme-switcher` |
+| **OpenClaw** | `~/.openclaw/skills/ai-map-theme-switcher` | `skills/ai-map-theme-switcher` |
+
+以通用路径为例：
 
 ```bash
-git clone https://github.com/Goose53-lee/ai-map-theme-switcher.git ~/.newmax/skills/ai-map-theme-switcher
-chmod +x ~/.newmax/skills/ai-map-theme-switcher/scripts/run_switch.sh
+git clone https://github.com/Goose53-lee/ai-map-theme-switcher.git ~/.agents/skills/ai-map-theme-switcher
+chmod +x ~/.agents/skills/ai-map-theme-switcher/scripts/run_switch.sh
 ```
+
+> 若使用其它 Agent，只需将上面命令中的 `~/.agents/skills/ai-map-theme-switcher` 替换为上表对应的目录即可。
 
 ## 仓库结构（标准 Skill 布局）
 
